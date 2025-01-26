@@ -1,0 +1,87 @@
+{%extends 'base.html'%}
+
+<html lang="en">
+<body class="bg-black">
+    {% block content %}
+
+    <!-- Introduction -->
+    <div class="flex flex-col align-center items-center gap-2">
+        <h1 class="text-emerald-400 font-extrabold text-3xl">WORKS</h1>
+        <p class="text-white text-sm font-light text-center md:w-1/2">Explore our works to see how we’ve transformed ideas into reality and collaborated with clients to bring visions to life.</p>
+    </div>
+
+    <!-- Top Row Container -->
+     <div class="flex flex-col md:flex-row md:items-stretch text-white justify-center align-center items-center w-full gap-8">
+        <!-- Project 1 -->
+        <div data-aos="zoom-in-down" class="flex flex-col flex-wrap bg-gray-500/50 p-8 w-4/5 h-80 rounded-lg md:w-80">
+            <div class="">
+                <h1 class="text-emerald-400 text-3xl font-extrabold pb-2">1</h1>
+                <h1 class="font-black text-xl py-2">Linked List</h1>
+                <p class="font-light text-xs leading-5">We built a Linked List, which is like a chain where each part is connected to the next. In this project, we added features that let us: remove the first item, remove the last item, and find and remove a specific item.</p>
+            </div>
+            <a href="/linked_list" class="text-xs font-medium underline underline-offset-4 absolute bottom-4 right-4">View ></a>
+        </div>
+        <!-- Project 2 -->
+        <div data-aos="zoom-in-down" class="flex flex-col flex-wrap bg-gray-500/50 p-8 w-4/5 h-80 rounded-lg md:w-80">
+            <div class="">
+                <h1 class="text-emerald-400 text-3xl font-extrabold pb-2">2</h1>
+                <h1 class="font-black text-xl py-2">Stack</h1>
+                <p class="font-light text-xs leading-5">Stacks are like piles of plates—you can only add or remove from the top. In this project, we implemented a Stack and used it to create a tool for converting math expressions from infix (normal notation) to postfix (simpler for computers).</p>
+            </div>
+            <a href="/stacks" class="text-xs font-medium underline underline-offset-4 absolute bottom-4 right-4">View ></a>
+        </div>
+        <!-- Project 3 -->
+        <div data-aos="zoom-in-down" class="flex flex-col flex-wrap bg-gray-500/50 p-8 w-4/5 h-80 rounded-lg md:w-80">
+            <div class="">
+                <h1 class="text-emerald-400 text-3xl font-extrabold pb-2">3</h1>
+                <h1 class="font-black text-xl py-2">Queue</h1>
+                <p class="font-light text-xs leading-5">WQueues work like lines at the checkout counter—first in, first out. In this exercise, we created a Queue and a Deque (a double-ended queue where you can add or remove items from either end).</p>
+            </div>
+            <a href="/queue" class="text-xs font-medium underline underline-offset-4 absolute bottom-4 right-4">View ></a>
+        </div>
+     </div>
+
+     <!-- Bottom Row Container -->
+      <div class="flex flex-col md:flex-row md:items-stretch text-white justify-center align-center items-center w-full gap-8">
+        <!-- Project 4 -->
+        <div data-aos="zoom-in-down" class="flex flex-col flex-wrap bg-gray-500/50 p-8 w-4/5 h-80 rounded-lg md:w-80">
+            <div class="">
+                <h1 class="text-emerald-400 text-3xl font-extrabold pb-2">4</h1>
+                <h1 class="font-black text-xl py-2">Binary List</h1>
+                <p class="font-light text-xs leading-5">For this project, we built a Binary List—a structure for working with binary data (0s and 1s). It’s a practical way to learn how computers store and manipulate data at the most basic level. Explore how this essential concept powers everything from images to files!</p>
+            </div>
+            <a href="/binary" class="text-xs font-medium underline underline-offset-4 absolute bottom-4 right-4">View ></a>
+        </div>
+        <!-- Project 5 -->
+        <div data-aos="zoom-in-down" class="flex flex-col flex-wrap bg-gray-500/50 p-8 w-4/5 h-80 rounded-lg md:w-80">
+            <div class="">
+                <h1 class="text-emerald-400 text-3xl font-extrabold pb-2">5</h1>
+                <h1 class="font-black text-xl py-2">MRT 1 Guide</h1>
+                <p class="font-light text-xs leading-5">For this project, we built a Binary List—a structure for working with binary data (0s and 1s). It’s a practical way to learn how computers store and manipulate data at the most basic level. Explore how this essential concept powers everything from images to files!</p>
+            </div>
+            <a href="/graph" class="text-xs font-medium underline underline-offset-4 absolute bottom-4 right-4">View ></a>
+        </div>
+        <!-- Project 6-->
+        <div data-aos="zoom-in-down" class="flex flex-col flex-wrap bg-gray-500/50 p-8 w-4/5 h-80 rounded-lg md:w-80">
+            <div class="">
+                <h1 class="text-emerald-400 text-3xl font-extrabold pb-2">5</h1>
+                <h1 class="font-black text-xl py-2">Sorting Research</h1>
+                <p class="font-light text-xs leading-5">For this project, we built a Binary List—a structure for working with binary data (0s and 1s). It’s a practical way to learn how computers store and manipulate data at the most basic level. Explore how this essential concept powers everything from images to files!</p>
+            </div>
+            <a href="/sort" class="text-xs font-medium underline underline-offset-4 absolute bottom-4 right-4">View ></a>
+        </div>
+
+        
+      </div>
+
+    <script>
+        AOS.init({
+        duration: 1000, 
+        once: true, 
+        mirror: false, 
+        });
+    </script>
+
+    {% endblock %} 
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Queue Operations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            padding: 20px;
+        }
+        h1 {
+            color: #16EEBC;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .button {
+            padding: 10px 20px;
+            background-color: #16EEBC;
+            border: none;
+            color: black;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+            width: 200px;
+        }
+        .button:hover {
+            background-color: #14c9b5;
+        }
+        .input-field {
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px;
+            width: 200px;
+        }
+        .queue-display {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .error-message {
+            color: red;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Queue Operations</h1>
+
+    <div class="container">
+        <form action="/enqueue" method="POST">
+            <input type="text" class="input-field" name="data" placeholder="Enter number to enqueue" required>
+            <button type="submit" class="button">Enqueue</button>
+        </form>
+
+        <form action="/dequeue" method="POST">
+            <button type="submit" class="button">Dequeue</button>
+        </form>
+
+        <form action="/peek" method="POST">
+            <button type="submit" class="button">Peek Front Item</button>
+        </form>
+
+        <form action="/clear" method="POST">
+            <button type="submit" class="button">Clear Queue</button>
+        </form>
+
+        {% if error %}
+        <p class="error-message">{{ error }}</p>
+        {% endif %}
+
+        <div class="queue-display">
+            <h3>Current Queue:</h3>
+            <p>{{ queue }}</p>
+
+            {% if front_item %}
+            <p>Front item: {{ front_item }}</p>
+            {% endif %}
+
+            {% if dequeued_item %}
+            <p>Dequeued: {{ dequeued_item }}</p>
+            {% endif %}
+
+            <p>Queue size: {{ size }}</p>
+        </div>
+    </div>
+
+</body>
+</html>

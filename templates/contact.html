@@ -1,0 +1,52 @@
+{%extends 'base.html'%}
+
+<html lang="en">
+<body class="bg-black">
+    {% block content %}
+    <div data-aos="fade-up" class="flex flex-col justify-center items-center md:flex-row my-10">
+        <!-- Left Content -->
+        <div data-aos="fade-up" class="md:w-1/2 flex flex-col justify-center items-center h-full align-center gap-2">
+            <div class="w-full flex justify-center">
+                <img class="h-15 w-15" src="{{ url_for('static', filename='assets/envelope-alt.png') }}" alt="Hello">
+            </div>
+            <h1 class="flex text-2xl justify-center font-bold text-emerald-400 md:w-full">Let's Connect</h1>
+            <p class="text-white text-center font-light text-base leading-6 md:w-2/3">Got a <span class="text-emerald-400 font-bold">project idea</span> or a <span class="text-emerald-400 font-bold">question</span>? Let’s bring your vision to life! We are available for <span class="text-emerald-400 font-bold">freelance</span> opportunities and eager to collaborate. Reach out and let’s create something amazing together!</p>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="md:w-1/2 w-full md:mt-0 my-12 bg-gray-500/50 rounded-xl p-8 rounded-lg shadow-md text-white text-sm">
+            <h2 class="text-2xl text-emerald-400 font-semibold text-center mb-6">Contact Us</h2>
+            <form action="#" method="POST">
+                <div class="mb-4">
+                    <label for="name" class="block font-light">Full Name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your full name" class="mt-2 p-3 w-full border bg-gray-700/50 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-400">
+                </div>
+    
+                <div class="mb-4">
+                    <label for="email" class="block font-light">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email address" class="mt-2 p-3 w-full border bg-gray-700/50 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-400">
+                </div>
+    
+                <div class="mb-4">
+                    <label for="message" class="block font-light">Message</label>
+                    <textarea id="message" name="message" placeholder="Your message" rows="3" class="mt-2 p-3 w-full border border bg-gray-700/50 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-400"></textarea>
+                </div>
+    
+                <div class="flex items-center justify-between">
+                    <button type="submit" class="px-10 py-2 bg-emerald-400 text-white text-sm rounded-full hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-300">Submit</button>
+                </div>
+            </form>
+        </div> 
+    </div>
+    
+
+    <script>
+        AOS.init({
+        duration: 1000, 
+        once: true, 
+        mirror: false, 
+        });
+    </script>
+    {% endblock %} 
+</body>
+</html>

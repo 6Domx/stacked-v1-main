@@ -1,0 +1,179 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <title>MRT Route Planner</title> 
+  <style> 
+    /* Global Styles */ 
+    body { 
+      font-family: Arial, sans-serif; 
+      margin: 0; 
+      padding: 0; 
+      transition: background-color 0.3s, color 0.3s; 
+    } 
+ 
+    .navbar { 
+      padding: 10px 20px; 
+      text-align: left; 
+      font-size: 1.5rem; 
+      font-weight: bold; 
+      color: white; 
+      background: linear-gradient(to right, black, #16EEBC); 
+      border-bottom: 2px solid #16EEBC; 
+    } 
+ 
+    .container { 
+      padding: 20px; 
+    } 
+ 
+    .card { 
+      margin: 20px auto; 
+      padding: 20px; 
+      border-radius: 8px; 
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); 
+      background: linear-gradient(to bottom, white, #16EEBC 85%); 
+      color: black; 
+      transition: background 0.3s, color 0.3s; 
+      text-align: center; 
+    } 
+ 
+    .form-select { 
+      width: 100%; 
+      padding: 10px; 
+      margin: 10px 0; 
+      border: 1px solid #ccc; 
+      border-radius: 4px; 
+      font-size: 1rem; 
+    } 
+ 
+    button { 
+      background-color: #16EEBC; 
+      color: black; 
+      border: none; 
+      padding: 10px 20px; 
+      font-size: 1rem; 
+      font-weight: bold; 
+      border-radius: 4px; 
+      cursor: pointer; 
+      transition: background-color 0.3s; 
+    } 
+ 
+    button:hover { 
+      background-color: #12c9a0; 
+    } 
+ 
+    h1, h2 { 
+      text-align: center; 
+      margin-bottom: 20px; 
+    } 
+ 
+    .button-container { 
+      display: flex; 
+      justify-content: center; 
+      margin-top: 20px; 
+    } 
+ 
+    /* Dark Mode Styles */ 
+    body.dark-mode { 
+      background-color: black !important; 
+      color: #16EEBC !important; 
+    } 
+ 
+    .dark-mode .card { 
+      background: linear-gradient(to bottom, black, #16EEBC 85%); 
+      border: 1px solid #16EEBC; 
+      color: #16EEBC; 
+    } 
+ 
+    .dark-mode .navbar { 
+      background: linear-gradient(to right, black, #16EEBC); 
+      border-bottom: 2px solid #16EEBC; 
+      color: #16EEBC; 
+    } 
+ 
+    .dark-mode .form-select { 
+      background-color: black; 
+      color: #16EEBC; 
+      border: 1px solid #16EEBC; 
+    } 
+ 
+    .dark-mode button { 
+      background-color: #16EEBC; 
+      color: black; 
+    } 
+ 
+    .dark-mode button:hover { 
+      background-color: #12c9a0; 
+    } 
+ 
+    .dark-mode h1, .dark-mode h2 { 
+      color: #16EEBC; 
+    } 
+ 
+    .toggle-dark-mode { 
+      position: fixed; 
+      bottom: 20px; /* Moves button to the bottom */ 
+      left: 50%; 
+      transform: translateX(-50%); 
+      font-size: 1.5rem; 
+      background: none; 
+      border: none; 
+      cursor: pointer; 
+    } 
+  </style> 
+</head> 
+<body> 
+  <div class="navbar">MRT Route Planner</div> 
+  <div class="container"> 
+    <div class="card"> 
+      <h2>🚉 Plan Your MRT Route</h2> 
+      <form method="POST"> 
+        <label for="start-station">Start Station:</label> 
+        <select id="start-station" name="start" class="form-select"> 
+          {% for station in stations %} 
+          <option value="{{ station }}">{{ station }}</option> 
+          {% endfor %} 
+        </select> 
+        <label for="end-station">End Station:</label> 
+        <select id="end-station" name="end" class="form-select"> 
+          {% for station in stations %} 
+          <option value="{{ station }}">{{ station }}</option> 
+          {% endfor %} 
+        </select> 
+        <div class="button-container"> 
+          <button type="submit">🚦 Find Route</button> 
+        </div> 
+      </form> 
+    </div> 
+    {% if path %} 
+    <div class="card"> 
+      <h2>🚏 Route Details</h2> 
+      <p><strong>Route:</strong> {{ path | join(' → ') }}</p> 
+      <p><strong>Distance:</strong> {{ distance }} km</p> 
+      <div class="button-container"> 
+        <button onclick="location.href='/'">⬅ Back</button> 
+      </div> 
+    </div> 
+    {% endif %} 
+  </div> 
+  <button class="toggle-dark-mode" onclick="toggleDarkMode()">🌙</button> 
+  <script>
+function toggleDarkMode() { 
+      document.body.classList.toggle('dark-mode'); 
+    } 
+  </script> 
+</body> 
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

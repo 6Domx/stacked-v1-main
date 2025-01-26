@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sorting Visualizer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom, #00cc99, #003333);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .controls {
+      background-color: #121212;
+      padding: 40px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+      width: 300px;
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .controls h1 {
+      font-size: 1.8em;
+    }
+
+    .input-container {
+      margin-bottom: 20px;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      padding: 10px;
+      width: 80%;
+      border: none;
+      border-radius: 5px;
+      outline: none;
+      margin-bottom: 10px;
+    }
+
+    select {
+      padding: 10px;
+      width: 85%;
+      margin: 10px 0;
+      border: none;
+      border-radius: 5px;
+      outline: none;
+    }
+
+    button {
+      background-color: #00cc99;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin-top: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #009977;
+    }
+
+    .visualizer {
+      background-color: #121212;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+      width: 700px;
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .bar-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      height: 300px;
+      gap: 10px;
+      width: 100%;
+      background-color: #1a1a1a;
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .bar {
+      width: 40px;
+      background-color: #00cc99;
+      text-align: center;
+      color: white;
+      border-radius: 5px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: bold;
+      padding-bottom: 5px;
+    }
+
+    .metrics {
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .metrics p {
+      margin: 5px 0;
+    }
+
+    .speed-control {
+      margin-top: 10px;
+    }
+
+    #speedValue {
+      display: block;
+      margin-top: 5px;
+    }
+
+    /* Style for the Refresh button */
+    #refreshButton {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background-color: #00cc99; /* Theme color */
+      padding: 10px 20px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      transition: 0.3s;
+    }
+
+    #refreshButton:hover {
+      background-color: #009977; /* Darker shade for hover */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="controls">
+      <h1>Sorting Visualizer</h1>
+      <div class="input-container">
+        <input type="number" id="barCount" placeholder="Number of bars (10-20)" min="10" max="100">
+        <button onclick="generateRandomArray()">Generate Random Array</button>
+        <select id="algorithm">
+          <option value="bubble">Bubble Sort</option>
+          <option value="selection">Selection Sort</option>
+          <option value="insertion">Insertion Sort</option>
+          <option value="merge">Merge Sort</option>
+          <option value="quick">Quick Sort</option>
+        </select>
+      </div>
+      <button onclick="startSort()">Sort</button>
+      <div class="speed-control">
+        <label for="speed">Speed:</label>
+        <input type="range" id="speed" min="100" max="2000" step="100" value="500">
+        <span id="speedValue">500ms</span>
+      </div>
+    </div>
+    <div class="visualizer">
+      <div class="bar-container" id="barContainer"></div>
+      <div class="metrics">
+        <p>Comparisons: <span id="comparisons">0</span></p>
+        <p>Swaps: <span id="swaps">0</span></p>
+      </div>
+      <!-- Refresh Button -->
+      <button id="refreshButton" onclick="refreshPage()">Refresh</button>
+    </div>
+  </div>
+
+  <script>
+    let comparisons = 0;
+    let swaps = 0;
+    let currentSpeed = 500;
+
+    function generateRandomArray() {
+      const barCount = parseInt(document.getElementById("barCount").value) || 20;
+      const array = Array.from({ length: barCount }, () => Math.floor(Math.random() * 100) + 1);
+      createBars(array);
+    }
+
+    function createBars(array) {
+      const barContainer = document.getElementById("barContainer");
+      barContainer.innerHTML = "";
+      array.forEach(value => {
+        const bar = document.createElement("div");
+        bar.classList.add("bar");
+        bar.style.height = `${value * 3}px`;
+        bar.textContent = value;
+        barContainer.appendChild(bar);
+      });
+    }
+
+    async function animateBars(array, highlightIndices) {
+      const bars = document.querySelectorAll(".bar");
+      bars.forEach((bar, i) => {
+        if (highlightIndices.includes(i)) {
+          // Yellow for comparison
+          bar.style.backgroundColor = "#ffcc00";
+        } else {
+          // Default color
+          bar.style.backgroundColor = "#00cc99";
+        }
+        bar.style.height = `${array[i] * 3}px`;
+        bar.textContent = array[i];
+      });
+      await new Promise(resolve => setTimeout(resolve, currentSpeed));
+    }
+
+    function updateMetrics(comparisonCount = 0, swapCount = 0) {
+      comparisons += comparisonCount;
+      swaps += swapCount;
+      document.getElementById("comparisons").textContent = comparisons;
+      document.getElementById("swaps").textContent = swaps;
+    }
+
+    async function bubbleSortAnimation(array) {
+      for (let i = 0; i < array.length - 1; i++) {
+        for (let j = 0; j < array.length - i - 1; j++) {
+          updateMetrics(1);
+          await animateBars(array, [j, j + 1]);
+          if (array[j] > array[j + 1]) {
+            [array[j], array[j + 1]] = [array[j + 1], array[j]];
+            updateMetrics(0, 1);
+            // Change color to orange for swap
+            await animateBars(array, [j, j + 1]);
+          }
+        }
+      }
+    }
+
+    async function selectionSortAnimation(array) {
+      for (let i = 0; i < array.length; i++) {
+        let minIndex = i;
+        for (let j = i + 1; j < array.length; j++) {
+          updateMetrics(1);
+          await animateBars(array, [i, j, minIndex]);
+          if (array[j] < array[minIndex]) minIndex = j;
+        }
+        [array[i], array[minIndex]] = [array[minIndex], array[i]];
+        updateMetrics(0, 1);
+      }
+    }
+
+    async function insertionSortAnimation(array) {
+      for (let i = 1; i < array.length; i++) {
+        const key = array[i];
+        let j = i - 1;
+        while (j >= 0 && array[j] > key) {
+          array[j + 1] = array[j];
+          j--;
+          updateMetrics(1, 1);
+          await animateBars(array, [j + 1, i]);
+        }
+        array[j + 1] = key;
+        await animateBars(array, [j + 1]);
+      }
+    }
+
+    async function mergeSortAnimation(array, start = 0, end = array.length) {
+      if (end - start <= 1) return;
+      const mid = Math.floor((start + end) / 2);
+      await mergeSortAnimation(array, start, mid);
+      await mergeSortAnimation(array, mid, end);
+      const merged = [];
+      let i = start, j = mid;
+      while (i < mid && j < end) {
+        updateMetrics(1);
+        if (array[i] < array[j]) merged.push(array[i++]);
+        else merged.push(array[j++]);
+      }
+      while (i < mid) merged.push(array[i++]);
+      while (j < end) merged.push(array[j++]);
+      for (let k = start; k < end; k++) array[k] = merged[k - start];
+      await animateBars(array, Array.from({ length: end - start }, (_, idx) => idx + start));
+    }
+
+    async function quickSortAnimation(array, low = 0, high = array.length - 1) {
+      if (low >= high) return;
+      const pivotIndex = await partition(array, low, high);
+      await quickSortAnimation(array, low, pivotIndex - 1);
+      await quickSortAnimation(array, pivotIndex + 1, high);
+    }
+
+    async function partition(array, low, high) {
+      const pivot = array[high];
+      let i = low;
+      for (let j = low; j < high; j++) {
+        updateMetrics(1);
+        if (array[j] < pivot) {
+          [array[i], array[j]] = [array[j], array[i]];
+          i++;
+          updateMetrics(0, 1);
+        }
+        await animateBars(array, [i, j, high]);
+      }
+      [array[i], array[high]] = [array[high], array[i]];
+      return i;
+    }
+
+    async function startSort() {
+      const bars = document.querySelectorAll(".bar");
+      const array = Array.from(bars, bar => parseInt(bar.textContent));
+      comparisons = 0;
+      swaps = 0;
+      const algorithm = document.getElementById("algorithm").value;
+
+      switch (algorithm) {
+        case "bubble":
+          await bubbleSortAnimation(array);
+          break;
+        case "selection":
+          await selectionSortAnimation(array);
+          break;
+        case "insertion":
+          await insertionSortAnimation(array);
+          break;
+        case "merge":
+          await mergeSortAnimation(array);
+          break;
+        case "quick":
+          await quickSortAnimation(array);
+          break;
+      }
+    }
+
+    document.getElementById("speed").addEventListener("input", (e) => {
+      currentSpeed = parseInt(e.target.value, 10);
+      document.getElementById("speedValue").textContent = `${currentSpeed}ms`;
+    });
+
+    // Refresh functionality to reload the page
+    function refreshPage() {
+      location.reload();
+    }
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

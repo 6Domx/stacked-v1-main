@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Infix to Postfix Converter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom, #00cc99, #003333);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .converter-container {
+      background-color: #121212;
+      padding: 40px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+      position: relative;
+      width: 400px;
+    }
+
+    .converter-container h1 {
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 90%;
+      padding: 10px;
+      font-size: 16px;
+      margin-bottom: 20px;
+      border: 1px solid #00cc99;
+      border-radius: 5px;
+      background-color: #0f0f0f;
+      color: white;
+    }
+
+    button {
+      width: 90%;
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background-color: #00cc99;
+      color: black;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-bottom: 10px;
+    }
+
+    button:hover {
+      background-color: #009977;
+    }
+
+    .output {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #dcdcdc;
+      text-align: center;
+      height: 200px; /* Fixed height for scrollable area */
+      overflow-y: auto; /* Enable vertical scrolling */
+      padding: 10px;
+      background-color: #1a1a1a;
+      border-radius: 5px;
+    }
+
+    .output strong {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .refresh-button {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 50%;
+      background-color: #00cc99;
+      color: black;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .refresh-button:hover {
+      background-color: #009977;
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="converter-container">
+    <h1>Infix to Postfix Converter</h1>
+    <input type="text" id="infix" placeholder="Enter infix expression (e.g., A+B*C)" />
+    <button onclick="convert()">Convert to Postfix</button>
+    <div class="output" id="output"></div>
+    <button class="refresh-button" onclick="refreshPage()">&#8634;</button>
+  </div>
+
+  <script>
+    function precedence(op) {
+      if (op === '+' || op === '-') return 1;
+      if (op === '*' || op === '/') return 2;
+      return 0;
+    }
+
+    function isOperator(c) {
+      return ['+', '-', '*', '/'].includes(c);
+    }
+
+    function shuntingYardWithSteps(infix) {
+      const stack = [];
+      let postfix = '';
+      const steps = []; // Track each intermediate state
+
+      for (const char of infix) {
+        if (/[a-zA-Z0-9]/.test(char)) {
+          postfix += char; // Add operand to output
+        } else if (char === '(') {
+          stack.push(char); // Push '(' to stack
+        } else if (char === ')') {
+          while (stack.length && stack[stack.length - 1] !== '(') {
+            postfix += stack.pop(); // Pop until '(' is found
+          }
+          stack.pop(); // Remove '('
+        } else if (isOperator(char)) {
+          while (
+            stack.length &&
+            precedence(stack[stack.length - 1]) >= precedence(char)
+          ) {
+            postfix += stack.pop(); // Pop higher precedence operators
+          }
+          stack.push(char);
+        }
+        // Record step after each character is processed
+        steps.push(postfix);
+      }
+
+      // Pop remaining operators
+      while (stack.length) {
+        postfix += stack.pop();
+        steps.push(postfix);
+      }
+
+      return { postfix, steps };
+    }
+
+    function convert() {
+      const infix = document.getElementById('infix').value;
+      if (!infix) {
+        document.getElementById('output').innerText = 'Please enter an infix expression!';
+        return;
+      }
+
+      const { postfix, steps } = shuntingYardWithSteps(infix);
+
+      // Build output for each step
+      const stepsHtml = steps.map(step => `${step}`).join('<br>');
+      document.getElementById('output').innerHTML = 
+        `<strong>Infix:</strong> ${infix}<br>
+        <strong>Postfix:</strong> ${postfix}<br>
+        <strong>Step-by-step:</strong><br>${stepsHtml}`;
+    }
+
+    function refreshPage() {
+      document.getElementById('infix').value = '';
+      document.getElementById('output').innerHTML = '';
+    }
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+

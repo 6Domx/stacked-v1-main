@@ -1,0 +1,76 @@
+{%extends 'base.html'%}
+
+<html lang="en">
+<body class="bg-black">
+    {% block content %}
+    <div class="flex flex-col min-h-screen overflow-hidden">
+        <!-- Navigation Bar -->
+        <div class="flex justify-between h-10 w-screen px-6 pb-5">
+            <div classname="logo" class="flex align-center items-center">
+                <h1 class="text-emerald-400 font-extrabold text-3xl tracking-tight">STACKED.</h1>
+            </div>
+            <div classname="links" class="hidden md:text-white md:flex md:align-center md:w-auto md:gap-8 md:items-center md:tracking-wide">
+                <a href="#hero">Home</a>
+                <a href="#profile">Profile</a>
+                <a href="#works">Works</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
+
+        <!-- Home Content -->
+        <div class="flex justify-center items-center align-center min-h-screen bg-cover bg-center" style='background-image: url("{{ url_for("static", filename="assets/stacked.png") }}");'>
+            <div class="flex h-full items-center justify-center align-center">
+                <h1 class="text-white font-extrabold text-4xl md:text-6xl leading-tight text-center overflow-hidden border-r-4 border-white whitespace-nowrap animate-typing">COLLABORATE. CODE. CONQUER.</h1>
+            </div>
+        </div>
+
+        <!-- Profile Section -->
+        <div id="profile" class="flex mx-6 my-20 md:mx-16 h-auto flex-col gap-8">
+            {% include 'profile.html' %}
+        </div>
+
+        <!-- Works Section -->
+         <div id="works" class="flex mx-6 my-10 md:mx-16 h-auto flex-col gap-8">
+            {% include 'works.html' %}
+         </div>
+
+        <!-- Contact Section -->
+         <div class="bg-gradient-to-b from-black to-emerald-400/45">
+            <div id="contact" class="flex mx-6 md:mx-16 md:h-screen h-auto flex-col gap-6">
+                {% include 'contact.html' %}
+             </div>
+
+         </div>
+    </div>
+
+    <style>
+        @keyframes typing {
+          from {
+            width: 0;
+          }
+          to {
+            width: 100%;
+          }
+        }
+        
+        @keyframes blink {
+          from, to {
+            border-color: transparent;
+          }
+          50% {
+            border-color: white;
+          }
+        }
+        
+        .animate-typing {
+          display: inline-block;
+          animation: typing 4s steps(30, end), blink 0.7s step-end infinite;
+          white-space: nowrap;
+          overflow: hidden;
+          border-right: 4px solid;
+          width: 100%;
+        }
+        </style>
+    {% endblock %}
+</body>
+</html>
